@@ -12,10 +12,10 @@ export const Colors = {
     textBold: '#32343E',
     teextButton: '#FFFFFF',
     background: '#fff',
+    buttonBackground: '#FF7622',
     tint: tintColorLight,
-    icon: '#687076',
+    icon: '#FC6E2A',
     tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
   },
   dark: {
     text: '#ECEDEE',
