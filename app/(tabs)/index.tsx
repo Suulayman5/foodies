@@ -1,26 +1,36 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Platform, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import React from 'react';
-import { fontFamily } from '@/constants/Fonts';
-import { fontSize } from '@/constants/Dimentions';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import '../global.css';
+import { fontFamily } from '@/constants/Fonts';
+import { fontSize, spacing } from '@/constants/Dimentions';
 import Button from '@/components/Button';
+import { Colors } from '@/constants/Colors';
+
+const { height } = Dimensions.get('window');
 
 export default function Index() {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      {/* <ImageBackground
-        source={require('../../assets/images/Onboarding_01.png')}
-        style={StyleSheet.absoluteFill}
-        resizeMode="cover"
-      /> */}
-      <View style={styles.overlay}>
-        <Text style={styles.title}>Welcome to the App!</Text>
-        <Button onPress={() => router.push('/(auth)/Signin')} title="Get Started" />
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topContent}>
+          <Image
+            source={require('@/assets/images/food-136461.png')}
+            resizeMode="contain"
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.overlay}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>All your favorites</Text>
+            <Text style={styles.subHeader}>Get all your loved foods in one once place,</Text>
+            <Text style={styles.subHeader}>you just place the order we do the rest</Text>
+          </View>
+          <Button onPress={() => router.push('/(auth)/Signin')} title="Get Started" />
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
@@ -28,31 +38,40 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  safeArea: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  topContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: height * 0.55,
+  },
+  image: {
+    width: '90%',
+    height: '80%',
+    marginTop: spacing.xl,
+    padding: spacing.lg,
   },
   overlay: {
-    flex: 1,
-    justifyContent: 'flex-end',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.xl * 1.5,
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 60,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)', // optional overlay
   },
-  title: {
+  header: {
+    marginBottom: spacing.xl,
+    alignItems: 'center',
+  },
+  headerText: {
+    fontWeight: '900',
     fontSize: fontSize.xl,
-    fontFamily: fontFamily.Light,
-    color: '#000',
-    marginBottom: 20,
+    marginBottom: spacing.md,
+    textAlign: 'center',
   },
-  button: {
-    backgroundColor: '#000',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    fontFamily: fontFamily.Medium,
+  subHeader: {
+    color: Colors.light.text,
     fontSize: fontSize.md,
+    textAlign: 'center',
   },
 });
