@@ -10,9 +10,12 @@ export const Colors = {
   light: {
     text: '#646982',
     textBold: '#32343E',
-    teextButton: '#FFFFFF',
+    textButton: '#FFFFFF',
     background: '#fff',
     buttonBackground: '#FF7622',
+    inputBackground: '#E0E2E8',
+    inputText: '#32343E',
+    placeholderText: '#A0A5BA',
     tint: tintColorLight,
     icon: '#FC6E2A',
     tabIconDefault: '#687076',

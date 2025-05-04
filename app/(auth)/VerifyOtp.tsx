@@ -3,11 +3,11 @@ import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
 import { fontSize, spacing } from '@/constants/Dimentions';
-import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import Otp from '@/components/Otp';
+import { Colors } from '@/constants/Colors';
 
 
 const signinSchema = Yup.object().shape({
@@ -31,72 +31,40 @@ const Signin = () => {
           <View style={styles.container}>
             {/* Top Header Section */}
             <View style={styles.topSection}>
-              <TouchableOpacity style={styles.backButton}>
+              <TouchableOpacity style={styles.backButton} onPress={()=> router.push('/(auth)/ForgotPassword')}>
                 <Ionicons name="chevron-back" size={24} color="#000" />
               </TouchableOpacity>
-              <Text style={styles.header}>Log In</Text>
+              <Text style={styles.header}>Forgot Password</Text>
               <Text style={styles.subHeader}>Please sign in to your existing account</Text>
             </View>
 
             {/* White Form Section */}
             <View style={styles.formSection}>
               <Formik
-                initialValues={{ email: '', password: '',  }}
+                initialValues={{ otp: '',   }}
                 validationSchema={signinSchema}
                 onSubmit={(values) => console.log(values)}
               >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>
-                    {/* <View>
-                      <Text style={styles.label}>NAME</Text>
-                      <TextInput
-                        onChangeText={handleChange('name')}
-                        value={values.name}
-                        placeholder="John Doe"
-                      />
-                      {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
-                    </View> */}
-                    <View style={{ marginTop: 20 }} />
-                    <View>
-                      <Text style={styles.label}>EMAIL</Text>
-                      <TextInput
-                        onChangeText={handleChange('email')}
-                        value={values.email}
-                        placeholder="example@gmail.com"
-                      />
-                      {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+                    <View style={styles.otpHeader}>
+                        <Text style={styles.otpText}>CODE</Text>
+                        <View style={styles.resendContainer}>
+                            <TouchableOpacity style={styles.resendFlex}>
+                                <Text style={styles.resend}>Resend </Text>
+                                <Text> in.</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={{ marginTop: 20 }} />
-                    <View>
-                      <Text style={styles.label}>PASSWORD</Text>
-                      <TextInput
-                        onChangeText={handleChange('password')}
-                        value={values.password}
-                        placeholder="* * * * * * * * * * * *"
-                        secureTextEntry
-                      />
-                      {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
-                    </View>
-                    <View style={{ marginTop:10 }} />
-                    <View>
-                      <View></View>
-                      <TouchableOpacity onPress={() => router.push('/(auth)/VerifyOtp')}>
-                        <Text style={styles.forgot}>Forgot Password</Text>
-                      </TouchableOpacity>
-                    </View>
-                    {/* <View style={{ marginTop: 20 }} /> */}
+                    <Otp/>
+                    {touched.otp && errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
                     <View style={styles.buttonWrapper}>
-                      <Button title="SIGN UP" onPress={handleSubmit} disabled={!values.email || !values.password || Object.keys(errors).length > 0}/>
+                      <Button title="VERIFY" onPress={handleSubmit}/>
                     </View>
                   </View>
                 )}
               </Formik>
-              <View style={styles.navigate}>
-                <Text style={styles.navigateText}>Don't have an account? </Text>
-                <TouchableOpacity onPress={() => router.push('/(auth)/Signup')}>
-                  <Text style={styles.push}> SIGN IN</Text>
-                </TouchableOpacity>
-                </View>
             </View>
           </View>
         </ScrollView>
@@ -153,12 +121,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     paddingTop: spacing.xl,
   },
-  label: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 6,
-    color: '#1B1B1B',
-  },
   error: {
     color: 'red',
     fontSize: 12,
@@ -167,25 +129,23 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     marginTop: 30,
   },
-  forgot: {
-    fontSize: fontSize.md,
-    color: Colors.light.buttonBackground,
-    textAlign: 'right',
-  },
-  navigate: {
+  otpHeader: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  navigateText: {
-    fontSize: fontSize.md,
-    color: Colors.light.text,
-    textAlign: 'center',
+  otpText: {
+    justifyContent: 'flex-start',
+    color: Colors.light.text
   },
-  push: {
-    fontSize: fontSize.md,
-    color: Colors.light.buttonBackground,
-    textAlign: 'center',
+  resendContainer: {
+    justifyContent: 'flex-end'
+
+  },
+  resend :{
+    textDecorationLine: 'underline',
     fontWeight: 'bold',
   },
+  resendFlex: {
+    flexDirection: 'row'
+  }
 });

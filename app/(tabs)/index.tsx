@@ -1,43 +1,58 @@
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native'
-import React from 'react'
-import { fontFamily } from '@/constants/Fonts'
-import { fontSize } from '@/constants/Dimentions'
-import { useRouter } from 'expo-router'
-import '../global.css'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Platform, StatusBar } from 'react-native';
+import React from 'react';
+import { fontFamily } from '@/constants/Fonts';
+import { fontSize } from '@/constants/Dimentions';
+import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import '../global.css';
+import Button from '@/components/Button';
 
-const index = () => {
-  const router = useRouter()
+export default function Index() {
+  const router = useRouter();
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ImageBackground
-          source={require('../../assets/images/Onboarding_01.png')}
-          style={{ width: '100%', height: '100%' }}
-          resizeMode="cover"
-        >
-          {/* <Text style={styles.text}>Hello</Text> */}
-          </ImageBackground>
-          <Text
-            style={{
-              fontSize: fontSize.xl,
-              fontFamily: fontFamily.bold,
-              color: '#000',
-              marginTop: 20,
-            }}>
-            Welcome to the App! 
-          </Text>
+    <View style={styles.container}>
+      {/* <ImageBackground
+        source={require('../../assets/images/Onboarding_01.png')}
+        style={StyleSheet.absoluteFill}
+        resizeMode="cover"
+      /> */}
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Welcome to the App!</Text>
+        <Button onPress={() => router.push('/(auth)/Signin')} title="Get Started" />
+      </View>
     </View>
-  )
+  );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 60,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)', // optional overlay
   },
-  text: {
-    fontSize: fontSize.lg,
-    fontWeight: 'bold',
+  title: {
+    fontSize: fontSize.xl,
+    fontFamily: fontFamily.Light,
+    color: '#000',
+    marginBottom: 20,
   },
-})
-
-export default index
+  button: {
+    backgroundColor: '#000',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontFamily: fontFamily.Medium,
+    fontSize: fontSize.md,
+  },
+});

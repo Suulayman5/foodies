@@ -7,19 +7,15 @@ import TextInput from '@/components/TextInput';
 import { fontSize, spacing } from '@/constants/Dimentions';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { router, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 
-const signupSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required').min(2, 'Name must be at least 2 characters long'),
+const signinSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address').required('Email is required'),
   password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters long'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
-    .required('Confirm Password is required'),
 });
 
-const Signup = () => {
+const Signin = () => {
   const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0D1B' }}>
@@ -35,31 +31,22 @@ const Signup = () => {
           <View style={styles.container}>
             {/* Top Header Section */}
             <View style={styles.topSection}>
-              <TouchableOpacity style={styles.backButton} onPress={() => router.push('/(auth)/Signin')}>
+              <TouchableOpacity style={styles.backButton} onPress={()=> router.push('/(auth)/Signin')}>
                 <Ionicons name="chevron-back" size={24} color="#000" />
               </TouchableOpacity>
-              <Text style={styles.header}>Sign Up</Text>
-              <Text style={styles.subHeader}>Please sign up to get started</Text>
+              <Text style={styles.header}>Forgot Password</Text>
+              <Text style={styles.subHeader}>Please sign in to your existing account</Text>
             </View>
 
             {/* White Form Section */}
             <View style={styles.formSection}>
               <Formik
-                initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
-                validationSchema={signupSchema}
+                initialValues={{ email: '',  }}
+                validationSchema={signinSchema}
                 onSubmit={(values) => console.log(values)}
               >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>
-                    <View>
-                      <Text style={styles.label}>NAME</Text>
-                      <TextInput
-                        onChangeText={handleChange('name')}
-                        value={values.name}
-                        placeholder="John Doe"
-                      />
-                      {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
-                    </View>
                     <View style={{ marginTop: 20 }} />
                     <View>
                       <Text style={styles.label}>EMAIL</Text>
@@ -70,33 +57,8 @@ const Signup = () => {
                       />
                       {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
                     </View>
-                    <View style={{ marginTop: 20 }} />
-                    <View>
-                      <Text style={styles.label}>PASSWORD</Text>
-                      <TextInput
-                        onChangeText={handleChange('password')}
-                        value={values.password}
-                        placeholder="* * * * * * * * * * * *"
-                        secureTextEntry
-                      />
-                      {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
-                    </View>
-                    <View style={{ marginTop: 20 }} />
-                    <View>
-                      <Text style={styles.label}>RE-TYPE PASSWORD</Text>
-                      <TextInput
-                        onChangeText={handleChange('confirmPassword')}
-                        value={values.confirmPassword}
-                        placeholder="* * * * * * * * * * * *"
-                        secureTextEntry
-                      />
-                      {touched.confirmPassword && errors.confirmPassword && (
-                        <Text style={styles.error}>{errors.confirmPassword}</Text>
-                      )}
-                    </View>
-                    {/* <View style={{ marginTop: 20 }} /> */}
                     <View style={styles.buttonWrapper}>
-                      <Button title="SIGN UP" onPress={handleSubmit} disabled={!values.name || !values.email || !values.password || !values.confirmPassword || Object.keys(errors).length > 0}/>
+                      <Button title="SIGN UP" onPress={handleSubmit}/>
                     </View>
                   </View>
                 )}
@@ -109,7 +71,7 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signin;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
