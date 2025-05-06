@@ -1,26 +1,13 @@
 import axiosInstance from "./axios"
 
-
-export const login = async () => {
-    const url = '/auth/login'
-
+export const getCategories = async () => {
+    const url = '/categories'
     try {
-        const response = await axiosInstance.post(url)
-        console.log(response)
-        return response.data?.user
+        const response = await axiosInstance.get(url)
+        console.log('categories======>>>>>>>>', response.data)
+        return response.data
     } catch (error) {
-        throw error;
-    }
-}
-
-export const signin = async () => {
-    const url = '/auth/signup'
-
-    try {
-        const response = await axiosInstance.post(url)
-        console.log(response)
-        return response.data?.user
-    } catch (error) {
-        throw error;
+        console.log('categories error====>>>>>', error)
+        throw error 
     }
 }

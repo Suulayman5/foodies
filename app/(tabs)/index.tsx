@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,6 +23,9 @@ export default function Index() {
           />
         </View>
         <View style={styles.overlay}>
+        <TouchableOpacity style={styles.skipContainer}>
+            <Text style={styles.skip} onPress={()=> router.push('/Home')}>SKIP</Text>
+          </TouchableOpacity>
           <View style={styles.header}>
             <Text style={styles.headerText}>All your favorites</Text>
             <Text style={styles.subHeader}>Get all your loved foods in one once place,</Text>
@@ -73,5 +76,16 @@ const styles = StyleSheet.create({
     color: Colors.light.text,
     fontSize: fontSize.md,
     textAlign: 'center',
+  },
+  skipContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: '100%', 
+    paddingHorizontal: spacing.md,
+  },
+  skip: {
+    marginTop: spacing.lg,
+    color: Colors.light.buttonBackground,
+    fontWeight: '500',
   },
 });

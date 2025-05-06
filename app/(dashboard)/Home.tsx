@@ -3,8 +3,11 @@ import React from 'react'
 import { fontSize, spacing } from '@/constants/Dimentions'
 import { Colors } from '@/constants/Colors'
 import TextInput from '@/components/TextInput'
+import { useQuery } from '@tanstack/react-query'
+import { getCategories } from '@/api/fetch'
 
 const Home = () => {
+  const {data: categories, isLoading} = useQuery({queryKey:['category'], queryFn:getCategories})
   return (
     <View style={styles.container}>
         <SafeAreaView style={styles.safeArea}>
@@ -13,34 +16,39 @@ const Home = () => {
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
+              <View style={styles.view}>
                 <View style={styles.nav}>
-                    <View style={styles.leftnav}>
-                        <View style={styles.navbar}>
-                            <Image source={require('@/assets/icons/Icon.png')}/>
-                        </View>
-                            <View >
-                                <Text style={styles.navtext}>DELIVER TO</Text>
-                                <View style={styles.midnav}>
-                                    <Text style={styles.midnavText}>Halal Lab office</Text>
-                                    <Image source={require('@/assets/icons/Polygon1.png')} style={styles.midnavImage}/>
-                                </View>
-                        </View>
-                    </View>
-                    <View>
-                        <Image source={require('@/assets/icons/Cart.png')}/>
-                    </View>
+                      <View style={styles.leftnav}>
+                          <View style={styles.navbar}>
+                              <Image source={require('@/assets/icons/Icon.png')}/>
+                          </View>
+                              <View >
+                                  <Text style={styles.navtext}>DELIVER TO</Text>
+                                  <View style={styles.midnav}>
+                                      <Text style={styles.midnavText}>Halal Lab office</Text>
+                                      <Image source={require('@/assets/icons/Polygon1.png')} style={styles.midnavImage}/>
+                                  </View>
+                          </View>
+                      </View>
+                      <View>
+                          <Image source={require('@/assets/icons/Cart.png')}/>
+                      </View>
                 </View>
-                <View style={styles.topText}>
-                    <Text style={styles.topTextHey}>Hey You, </Text>
-                    <Text style={styles.greeting}>Good Afternoon!</Text>
+                  <View style={styles.topText}>
+                      <Text style={styles.topTextHey}>Hey You, </Text>
+                      <Text style={styles.greeting}>Good Afternoon!</Text>
+                  </View>
+                  <View style={{ marginTop: 20 }} /> 
+                  <View style={styles.inputContainer}>
+                      <View style={styles.icon}>
+                          <Image source={require('@/assets/icons/Search.png')} />
+                      </View>
+                      <TextInput placeholder='Search dishes, restaurants'style={styles.input}/>
                 </View>
-                <View style={{ marginTop: 20 }} /> 
-                <View style={styles.inputContainer}>
-                    <View style={styles.icon}>
-                        <Image source={require('@/assets/icons/Search.png')} />
-                    </View>
-                    <TextInput placeholder='Search dishes, restaurants'style={styles.input}/>
+                <View>
+                  hi
                 </View>
+              </View>
             </ScrollView>
         </SafeAreaView>
     </View>
@@ -51,15 +59,16 @@ export default Home
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: Colors.light?.background
     },
     safeArea: {
         flex: 1,
         justifyContent: 'center',
-        paddingTop: spacing.xl,
         width: '100%',
-        padding: spacing.lg,
-        marginTop: spacing.xl,
+      },
+      view: {
+        margin: spacing.md,
       },
       nav: {
         flexDirection: 'row',
