@@ -48,10 +48,15 @@ const Signup = () => {
             <Formik
               initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
               validationSchema={signupSchema}
-              onSubmit={(values) => {
-                signup(values.email, values.password, values.name,);
-                console.log('values=========>>>>>', values);
+              onSubmit={async (values) => {
+                try {
+                  await signup(values.email, values.password, values.name);
+                  router.push('/VerifyOtp');
+                } catch (err) {
+                  console.log('Signup failed:', err);
+                }
               }}
+              
             >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>

@@ -58,7 +58,14 @@ const {verifyEmail, isLoading} = useAuthStore()
               <Formik
                 initialValues={{ otp: '' }}
                 validationSchema={verifyOtpSchema}
-                onSubmit={(values) => verifyEmail({ code: values.otp })}
+                onSubmit={async (values) =>{
+                  try {
+                    await verifyEmail(values.otp)
+                    router.push('/Home')
+                  } catch (error) {
+                    console.log('error verifying otp =======>>>>>>>', error)
+                  }
+                }}
               >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>
@@ -72,8 +79,8 @@ const {verifyEmail, isLoading} = useAuthStore()
                       </View>
                     </View>
                     <View style={{ marginTop: 20 }} />
-                    <Otp value={values.otp} onChange={handleChange('otp')} />
-                    {touched.otp && errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
+                    <Otp onChange={handleChange('otp')} />
+                      {touched.otp && errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
                     <View style={styles.buttonWrapper}>
                       <Button title="VERIFY" onPress={handleSubmit} loading={isLoading} />
                     </View>
