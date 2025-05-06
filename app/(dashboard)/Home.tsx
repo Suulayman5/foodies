@@ -1,22 +1,26 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { fontSize, spacing } from '@/constants/Dimentions'
 import { Colors } from '@/constants/Colors'
 import TextInput from '@/components/TextInput'
 import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '@/api/fetch'
+import CategoryList from '@/components/CategoryList'
+import Layout from '@/components/Layout'
+import { applyStyles } from '@/assets/styles'
+import { scaledSize } from '@/assets/style-guide/typography'
 
 const Home = () => {
   const {data: categories, isLoading} = useQuery({queryKey:['category'], queryFn:getCategories})
+  const cat = categories ?? []
+
+  console.log('data=====>>>>>>', cat)
   return (
-    <View style={styles.container}>
-        <SafeAreaView style={styles.safeArea}>
-            <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="handled"
-            >
-              <View style={styles.view}>
+    <Layout style={applyStyles('w-full',{paddingHorizontal: scaledSize(16)})}
+    touchable={false}>
+        {/* <SafeAreaView style={styles.safeArea}> */}
+              <View style={applyStyles('flex-1 mt-40 pt-20 bg-red-500')}>
+
                 <View style={styles.nav}>
                       <View style={styles.leftnav}>
                           <View style={styles.navbar}>
@@ -34,49 +38,56 @@ const Home = () => {
                           <Image source={require('@/assets/icons/Cart.png')}/>
                       </View>
                 </View>
-                  <View style={styles.topText}>
-                      <Text style={styles.topTextHey}>Hey You, </Text>
-                      <Text style={styles.greeting}>Good Afternoon!</Text>
+                <View style={styles.topText}>
+                    <Text style={styles.topTextHey}>Hey You, </Text>
+                    <Text style={styles.greeting}>Good Afternoon!</Text>
+                </View>
+                <View style={{ marginTop: 20 }} /> 
+                <View style={styles.inputContainer}>
+                    <View style={styles.icon}>
+                        <Image source={require('@/assets/icons/Search.png')} />
+                    </View>
+                    <TextInput placeholder='Search dishes, restaurants'style={styles.input}/>
+                </View>
+                <View style={{ marginTop: 20 }} /> 
+                <View style={styles.categoryContainer}>
+                  <View style={styles.categoryTextContainer}>
+                    <Text style={styles.categoryText}>All Categories</Text>
+                    <View style={styles.categoryNavContainer}>
+                        <TouchableOpacity style={styles.categorySubNavContainer}>
+                          <Text style={styles.categoryNavText}>See All</Text>
+                          <Image source={require('@/assets/icons/Vector(1).png')} style={{marginTop: 4}}/>
+                        </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={{ marginTop: 20 }} /> 
-                  <View style={styles.inputContainer}>
-                      <View style={styles.icon}>
-                          <Image source={require('@/assets/icons/Search.png')} />
-                      </View>
-                      <TextInput placeholder='Search dishes, restaurants'style={styles.input}/>
-                </View>
-                <View>
-                  hi
+                  <View style={styles.categorys}>
+                  <FlatList
+                    data={cat.category}
+                    renderItem={({ item }) => <CategoryList category={item} />}
+                    keyExtractor={(item) => item._id.toString()}
+                    horizontal={true} // This makes it scroll sideways
+                    showsHorizontalScrollIndicator={false}
+                    // ItemSeparatorComponent={() => <View style={{ width: 50 }}/>}
+                   />
+
+                  </View>
                 </View>
               </View>
-            </ScrollView>
-        </SafeAreaView>
-    </View>
+        {/* </SafeAreaView> */}
+    </Layout>
   )
 }
 export default Home
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: Colors.light?.background
-    },
-    safeArea: {
-        flex: 1,
-        justifyContent: 'center',
-        width: '100%',
-      },
-      view: {
-        margin: spacing.md,
-      },
       nav: {
+        // flex: 1,
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between'
       },
       navbar: {
-        backgroundColor: Colors.light.placeholderText,
         borderRadius: 30,
         padding: 10,
         width: 48,
@@ -137,4 +148,32 @@ const styles = StyleSheet.create({
       input: {
         paddingLeft: 60,
       },
+      categoryContainer: {
+        width: '100%'
+      },
+      categoryTextContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+      },
+      categoryNavContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingTop: spacing.xs
+      },
+      categorySubNavContainer: {
+        flexDirection: 'row',
+        gap: spacing.md,
+      },
+      categoryNavText: {
+        color: Colors.light.text,
+        fontSize: fontSize.md
+      },
+      categoryText: {
+        justifyContent: 'flex-start',
+        fontSize: fontSize.lg,
+        color: Colors.light.textBold,
+      },
+      categorys: {
+        paddingHorizontal: spacing.md,
+      }
 })
