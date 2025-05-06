@@ -10,12 +10,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 
-const signinSchema = Yup.object().shape({
+const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address').required('Email is required'),
   password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters long'),
 });
 
-const Signin = () => {
+const ForgotPassword = () => {
   const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0D1B' }}>
@@ -42,7 +42,7 @@ const Signin = () => {
             <View style={styles.formSection}>
               <Formik
                 initialValues={{ email: '',  }}
-                validationSchema={signinSchema}
+                validationSchema={ForgotPasswordSchema}
                 onSubmit={(values) => console.log(values)}
               >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
@@ -71,14 +71,14 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default ForgotPassword;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0E0D1B',
   },
   topSection: {
-    paddingTop: 60,
+    paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 40,
     borderBottomLeftRadius: 30,

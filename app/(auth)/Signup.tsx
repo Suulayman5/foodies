@@ -5,10 +5,9 @@ import { Formik } from 'formik';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import { fontSize, spacing } from '@/constants/Dimentions';
-import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { router, useRouter } from 'expo-router';
-
+import { useRouter } from 'expo-router';
+import { useAuthStore } from '@/api/AuthStore';
 
 const signupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required').min(2, 'Name must be at least 2 characters long'),
@@ -18,9 +17,11 @@ const signupSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
     .required('Confirm Password is required'),
 });
-
 const Signup = () => {
+  const { signup, error, isLoading } = useAuthStore();
+
   const router = useRouter();
+  
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0D1B' }}>
       <KeyboardAvoidingView
@@ -35,7 +36,7 @@ const Signup = () => {
           <View style={styles.container}>
             {/* Top Header Section */}
             <View style={styles.topSection}>
-              <TouchableOpacity style={styles.backButton} onPress={() => router.push('/(auth)/Signin')}>
+              <TouchableOpacity style={styles.backButton} onPress={() => router.push('/Signin')}>
                 <Ionicons name="chevron-back" size={24} color="#000" />
               </TouchableOpacity>
               <Text style={styles.header}>Sign Up</Text>
@@ -44,11 +45,14 @@ const Signup = () => {
 
             {/* White Form Section */}
             <View style={styles.formSection}>
-              <Formik
-                initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
-                validationSchema={signupSchema}
-                onSubmit={(values) => console.log(values)}
-              >
+            <Formik
+              initialValues={{ name: '', email: '', password: '', confirmPassword: '' }}
+              validationSchema={signupSchema}
+              onSubmit={(values) => {
+                signup(values.email, values.password, values.name,);
+                console.log('values=========>>>>>', values);
+              }}
+            >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>
                     <View>
@@ -56,7 +60,7 @@ const Signup = () => {
                       <TextInput
                         onChangeText={handleChange('name')}
                         value={values.name}
-                        placeholder="John Doe"
+                        placeholder="Itadori Yuji"
                       />
                       {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
                     </View>
@@ -76,7 +80,7 @@ const Signup = () => {
                       <TextInput
                         onChangeText={handleChange('password')}
                         value={values.password}
-                        placeholder="* * * * * * * * * * * *"
+                        placeholder="* * * * * * * * *"
                         secureTextEntry
                       />
                       {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
@@ -87,7 +91,7 @@ const Signup = () => {
                       <TextInput
                         onChangeText={handleChange('confirmPassword')}
                         value={values.confirmPassword}
-                        placeholder="* * * * * * * * * * * *"
+                        placeholder="* * * * * * * * *"
                         secureTextEntry
                       />
                       {touched.confirmPassword && errors.confirmPassword && (
@@ -96,7 +100,7 @@ const Signup = () => {
                     </View>
                     {/* <View style={{ marginTop: 20 }} /> */}
                     <View style={styles.buttonWrapper}>
-                      <Button title="SIGN UP" onPress={handleSubmit} disabled={!values.name || !values.email || !values.password || !values.confirmPassword || Object.keys(errors).length > 0}/>
+                      <Button title="SIGN UP" loading={isLoading} onPress={handleSubmit} disabled={!values.name || !values.email || !values.password || !values.confirmPassword || Object.keys(errors).length > 0}/>
                     </View>
                   </View>
                 )}
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0E0D1B',
   },
   topSection: {
-    paddingTop: 60,
+    paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 40,
     borderBottomLeftRadius: 30,
@@ -151,7 +155,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingBottom: spacing.lg,
+    // paddingBottom: spacing.md,
   },
   form: {
     padding: spacing.lg,

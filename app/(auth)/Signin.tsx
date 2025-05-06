@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0E0D1B',
   },
   topSection: {
-    paddingTop: 60,
+    paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 40,
     borderBottomLeftRadius: 30,

@@ -1,4 +1,13 @@
-import { KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -8,15 +17,21 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import Otp from '@/components/Otp';
 import { Colors } from '@/constants/Colors';
+import { useMutation } from '@tanstack/react-query';
+import Toast from 'react-native-toast-message';
+import { useAuthStore } from '@/api/AuthStore';
 
-
-const signinSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters long'),
+const verifyOtpSchema = Yup.object().shape({
+  otp: Yup.string()
+    .matches(/^\d{6}$/, 'OTP must be a 6-digit number')
+    .required('OTP is required'),
 });
 
-const Signin = () => {
+const VerifyOtp = () => {
   const router = useRouter();
+
+const {verifyEmail, isLoading} = useAuthStore()
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0D1B' }}>
       <KeyboardAvoidingView
@@ -31,36 +46,36 @@ const Signin = () => {
           <View style={styles.container}>
             {/* Top Header Section */}
             <View style={styles.topSection}>
-              <TouchableOpacity style={styles.backButton} onPress={()=> router.push('/(auth)/ForgotPassword')}>
+              <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
                 <Ionicons name="chevron-back" size={24} color="#000" />
               </TouchableOpacity>
-              <Text style={styles.header}>Forgot Password</Text>
-              <Text style={styles.subHeader}>Please sign in to your existing account</Text>
+              <Text style={styles.header}>Verify OTP</Text>
+              <Text style={styles.subHeader}>Please input your OTP</Text>
             </View>
 
             {/* White Form Section */}
             <View style={styles.formSection}>
               <Formik
-                initialValues={{ otp: '',   }}
-                validationSchema={signinSchema}
-                onSubmit={(values) => console.log(values)}
+                initialValues={{ otp: '' }}
+                validationSchema={verifyOtpSchema}
+                onSubmit={(values) => verifyEmail({ code: values.otp })}
               >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>
                     <View style={styles.otpHeader}>
-                        <Text style={styles.otpText}>CODE</Text>
-                        <View style={styles.resendContainer}>
-                            <TouchableOpacity style={styles.resendFlex}>
-                                <Text style={styles.resend}>Resend </Text>
-                                <Text> in.</Text>
-                            </TouchableOpacity>
-                        </View>
+                      <Text style={styles.otpText}>CODE</Text>
+                      <View style={styles.resendContainer}>
+                        <TouchableOpacity style={styles.resendFlex}>
+                          <Text style={styles.resend}>Resend</Text>
+                          <Text> in.</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                     <View style={{ marginTop: 20 }} />
-                    <Otp/>
+                    <Otp value={values.otp} onChange={handleChange('otp')} />
                     {touched.otp && errors.otp && <Text style={styles.error}>{errors.otp}</Text>}
                     <View style={styles.buttonWrapper}>
-                      <Button title="VERIFY" onPress={handleSubmit}/>
+                      <Button title="VERIFY" onPress={handleSubmit} loading={isLoading} />
                     </View>
                   </View>
                 )}
@@ -73,7 +88,8 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default VerifyOtp;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -131,21 +147,20 @@ const styles = StyleSheet.create({
   },
   otpHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   otpText: {
     justifyContent: 'flex-start',
-    color: Colors.light.text
+    color: Colors.light.text,
   },
   resendContainer: {
-    justifyContent: 'flex-end'
-
+    justifyContent: 'flex-end',
   },
-  resend :{
+  resend: {
     textDecorationLine: 'underline',
     fontWeight: 'bold',
   },
   resendFlex: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });
