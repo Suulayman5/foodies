@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0E0D1B',
   },
   backButton: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.light.text,
     borderRadius: 30,
     padding: 10,
     width: 45,

@@ -19,6 +19,8 @@ export const Colors = {
     tint: tintColorLight,
     icon: '#FC6E2A',
     tabIconDefault: '#687076',
+    backButton: '#ECF0F4',
+
   },
   dark: {
     text: '#ECEDEE',

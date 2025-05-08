@@ -1,26 +1,26 @@
-import { FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { fontSize, spacing } from '@/constants/Dimentions'
 import { Colors } from '@/constants/Colors'
 import TextInput from '@/components/TextInput'
 import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '@/api/fetch'
-import CategoryList from '@/components/CategoryList'
+import CategoryList from '@/app/(dashboard)/categories/CategoryList'
 import Layout from '@/components/Layout'
 import { applyStyles } from '@/assets/styles'
 import { scaledSize } from '@/assets/style-guide/typography'
+import { useRouter } from 'expo-router'
 
 const Home = () => {
   const {data: categories, isLoading} = useQuery({queryKey:['category'], queryFn:getCategories})
   const cat = categories ?? []
-
+  const router = useRouter()
   console.log('data=====>>>>>>', cat)
   return (
     <Layout style={applyStyles('w-full',{paddingHorizontal: scaledSize(16)})}
     touchable={false}>
-        {/* <SafeAreaView style={styles.safeArea}> */}
-              <View style={applyStyles('flex-1 mt-40 pt-20 bg-red-500')}>
-
+        <SafeAreaView style={styles.AndroidSafeArea}>
+              <View style={applyStyles('flex-1 bg-red-500')}>
                 <View style={styles.nav}>
                       <View style={styles.leftnav}>
                           <View style={styles.navbar}>
@@ -54,7 +54,7 @@ const Home = () => {
                   <View style={styles.categoryTextContainer}>
                     <Text style={styles.categoryText}>All Categories</Text>
                     <View style={styles.categoryNavContainer}>
-                        <TouchableOpacity style={styles.categorySubNavContainer}>
+                        <TouchableOpacity style={styles.categorySubNavContainer} onPress={()=> router.push('/categories/categoriesList')}>
                           <Text style={styles.categoryNavText}>See All</Text>
                           <Image source={require('@/assets/icons/Vector(1).png')} style={{marginTop: 4}}/>
                         </TouchableOpacity>
@@ -73,8 +73,32 @@ const Home = () => {
 
                   </View>
                 </View>
+                <View style={{ marginTop: 20 }} /> 
+                <View style={styles.categoryContainer}>
+                  <View style={styles.categoryTextContainer}>
+                    <Text style={styles.categoryText}>Open Restaurants</Text>
+                    <View style={styles.categoryNavContainer}>
+                        <TouchableOpacity style={styles.categorySubNavContainer} onPress={()=> router.push('/categories/categoriesList')}>
+                          <Text style={styles.categoryNavText}>See All</Text>
+                          <Image source={require('@/assets/icons/Vector(1).png')} style={{marginTop: 4}}/>
+                        </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={{ marginTop: 20 }} /> 
+                  {/* <View style={styles.categorys}>
+                  <FlatList
+                    data={cat.category}
+                    renderItem={({ item }) => <CategoryList category={item} />}
+                    keyExtractor={(item) => item._id.toString()}
+                    horizontal={true} // This makes it scroll sideways
+                    showsHorizontalScrollIndicator={false}
+                    // ItemSeparatorComponent={() => <View style={{ width: 50 }}/>}
+                   />
+
+                  </View> */}
+                </View>
               </View>
-        {/* </SafeAreaView> */}
+        </SafeAreaView>
     </Layout>
   )
 }
@@ -175,5 +199,10 @@ const styles = StyleSheet.create({
       },
       categorys: {
         paddingHorizontal: spacing.md,
-      }
+      },
+      AndroidSafeArea: {
+          flex: 1,
+          backgroundColor: "white",
+          paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+        },
 })

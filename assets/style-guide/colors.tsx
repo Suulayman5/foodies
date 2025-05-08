@@ -38,6 +38,7 @@ export default Object.freeze({
   placeholderText: '#A0A5BA',
   icon: '#FC6E2A',
   tabIconDefault: '#687076',
+  backButton: '#ECF0F4',
 
   shades: {
     gray: {
