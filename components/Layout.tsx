@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   default: {
     flex: 1,
-    backgroundColor: StyleGuide.Colors.white,
+    // backgroundColor: StyleGuide.Colors.white,
     paddingTop: Platform.OS === 'ios' ? scaledSize(8) : scaledSize(16),
     paddingHorizontal: scaledSize(24),
   },

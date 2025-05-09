@@ -8,7 +8,6 @@ export const getCategories = async () => {
         return response.data
     } catch (error) {
         console.log('categories error====>>>>>', error)
-        console.log('categories error2====>>>>>', error?.response.data)
         throw error 
     }
 }
@@ -21,6 +20,18 @@ export const getCategoriesById = async ({categoryId}:{categoryId: string}) => {
         return response.data
     } catch (error) {
         console.log('categories items error====>>>>>', error?.response?.data?.message)
+        throw error?.response?.data?.message
+    }
+}
+
+export const getResturant = async () => {
+    const url = '/resturant'
+    try {
+        const response = await axiosInstance.get(url)
+        console.log('resturants ======>>>>>', response.data)
+        return response.data
+    } catch (error) {
+        console.log('resturant error====>>>>>', error?.response?.data?.message)
         throw error?.response?.data?.message
     }
 }

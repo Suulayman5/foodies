@@ -1,25 +1,33 @@
-import { FlatList, Image, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { fontSize, spacing } from '@/constants/Dimentions'
 import { Colors } from '@/constants/Colors'
 import TextInput from '@/components/TextInput'
 import { useQuery } from '@tanstack/react-query'
-import { getCategories } from '@/api/fetch'
+import { getCategories, getResturant } from '@/api/fetch'
 import CategoryList from '@/app/(dashboard)/categories/CategoryList'
 import Layout from '@/components/Layout'
 import { applyStyles } from '@/assets/styles'
 import { scaledSize } from '@/assets/style-guide/typography'
 import { useRouter } from 'expo-router'
+import Resturant from './resturant/resturant'
 
 const Home = () => {
   const {data: categories, isLoading} = useQuery({queryKey:['category'], queryFn:getCategories})
   const cat = categories ?? []
   const router = useRouter()
   console.log('data=====>>>>>>', cat)
+
+  const {data} = useQuery({ queryKey: ['resturant'], queryFn: getResturant})
+  const resturants = data ?? []
+  console.log('data=====>>>>>>', resturants)
+
+
   return (
     <Layout style={applyStyles('w-full',{paddingHorizontal: scaledSize(16)})}
     touchable={false}>
         <SafeAreaView style={styles.AndroidSafeArea}>
+          <ScrollView>
               <View style={applyStyles('flex-1 bg-red-500')}>
                 <View style={styles.nav}>
                       <View style={styles.leftnav}>
@@ -85,19 +93,18 @@ const Home = () => {
                     </View>
                   </View>
                   <View style={{ marginTop: 20 }} /> 
-                  {/* <View style={styles.categorys}>
+                  <View style={styles.categorys}>
                   <FlatList
-                    data={cat.category}
-                    renderItem={({ item }) => <CategoryList category={item} />}
+                    data={resturants.resturant}
+                    renderItem={({ item }) => <Resturant resturant={item} />}
                     keyExtractor={(item) => item._id.toString()}
-                    horizontal={true} // This makes it scroll sideways
-                    showsHorizontalScrollIndicator={false}
                     // ItemSeparatorComponent={() => <View style={{ width: 50 }}/>}
                    />
 
-                  </View> */}
+                  </View>
                 </View>
               </View>
+          </ScrollView>
         </SafeAreaView>
     </Layout>
   )
@@ -202,7 +209,6 @@ const styles = StyleSheet.create({
       },
       AndroidSafeArea: {
           flex: 1,
-          backgroundColor: "white",
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
         },
 })

@@ -37,7 +37,7 @@ const router = useRouter()
                         <Text>BURGER</Text>
                         <Image source={require('@/assets/icons/Polygon(11).png')} style={applyStyles('mt-8 ml-10')}/>
                     </View>
-                </View>
+              </View>
               <View style={applyStyles('flex-row ')}>
                     <View style={styles.searchButton}>
                       <Image source={require('@/assets/icons/Search.png')}/>
