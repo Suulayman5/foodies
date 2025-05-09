@@ -8,6 +8,7 @@ export const getCategories = async () => {
         return response.data
     } catch (error) {
         console.log('categories error====>>>>>', error)
+        console.log('categories error2====>>>>>', error?.response.data)
         throw error 
     }
 }

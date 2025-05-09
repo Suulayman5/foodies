@@ -30,7 +30,7 @@ const router = useRouter()
         <View style={applyStyles('mt-8 w-full')}>
              <View style={applyStyles('flex-row justify-between items-center')}>
                 <View style={applyStyles('flex-row justify-between items-center')}>
-                    <TouchableOpacity style={styles.backButton} onPress={()=> router.back}>
+                    <TouchableOpacity style={styles.backButton} onPress={()=> router.back()}>
                       <Image source={require('@/assets/icons/Back(1).png')}/>
                     </TouchableOpacity>
                     <View style={applyStyles('flex-row ml-24 justify-between p-12 rounded-xl border-1 border-shades-gray-300')}>
