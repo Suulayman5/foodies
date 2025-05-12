@@ -30,10 +30,10 @@ const Resturant = ({ resturant }: { resturant: Resturant }) => {
 
         {/* Bottom Content */}
         <View style={applyStyles('p-4')}>
-          <Text style={{ ...applyStyles('text-xl py-2 font-semibold text-titleText'), color: Colors.light.titleText }}>{resturant.name}</Text>
-          <Text style={{ ...applyStyles(''), color: Colors.light.placeholderText }}>{resturant.category.map(cat => cat.name).join(' - ')}</Text>
+          <Text style={{ ...applyStyles('text-xl py-8 font-semibold text-titleText'), color: Colors.light.titleText }}>{resturant.name}</Text>
+          <Text style={{ ...applyStyles('py-6'), color: Colors.light.placeholderText }}>{resturant.category.map(cat => cat.name).join(' - ')}</Text>
 
-          <View style={{ ...applyStyles('flex-row gap-4 my-8 items-center'), }}>
+          <View style={{ ...applyStyles('flex-row my-10 items-center'), }}>
             <View style={applyStyles('flex-row items-center pr-20')}>
               <Image source={require('@/assets/icons/Star.png')} style={applyStyles('mr-4',)} />
               <Text style={{ ...applyStyles('text-base'), color: Colors.light.titleText, fontWeight: 'bold' }}>3.7</Text>

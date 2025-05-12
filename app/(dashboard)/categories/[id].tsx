@@ -160,10 +160,10 @@ const styles = StyleSheet.create({
         zIndex: 1,
       },
       title: {
-        fontSize: fontSize.lg,
+        fontSize: fontSize.md,
         fontWeight: 'bold',
         color: Colors.light.textBold,
-        marginBottom: spacing.sm,
+        marginBottom: spacing.md,
         marginTop: 20,
         textAlign: 'left',
       },

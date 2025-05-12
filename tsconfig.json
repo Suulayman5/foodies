@@ -12,6 +12,8 @@
     "**/*.ts",
     "**/*.tsx",
     "nativewind-env.d.ts",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
   ]
 }

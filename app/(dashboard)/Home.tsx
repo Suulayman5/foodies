@@ -11,6 +11,7 @@ import { applyStyles } from '@/assets/styles'
 import { scaledSize } from '@/assets/style-guide/typography'
 import { useRouter } from 'expo-router'
 import Resturant from './resturant/resturant'
+import { useAuthStore } from '@/api/AuthStore'
 
 const Home = () => {
   const {data: categories, isLoading} = useQuery({queryKey:['category'], queryFn:getCategories})
@@ -22,6 +23,7 @@ const Home = () => {
   const resturants = data ?? []
   console.log('data=====>>>>>>', resturants)
 
+    const { isAuthenticated, user } = useAuthStore();
 
   return (
     <Layout style={applyStyles('w-full',{paddingHorizontal: scaledSize(16)})}
@@ -47,8 +49,8 @@ const Home = () => {
                       </View>
                 </View>
                 <View style={styles.topText}>
-                    <Text style={styles.topTextHey}>Hey You, </Text>
-                    <Text style={styles.greeting}>Good Afternoon!</Text>
+                    <Text style={styles.topTextHey}>Hey, </Text>
+                    <Text style={styles.greeting}> {user?.name}!</Text>
                 </View>
                 <View style={{ marginTop: 20 }} /> 
                 <View style={styles.inputContainer}>
@@ -81,7 +83,7 @@ const Home = () => {
 
                   </View>
                 </View>
-                <View style={{ marginTop: 20 }} /> 
+                <View style={{ marginTop: 30 }} /> 
                 <View style={styles.categoryContainer}>
                   <View style={styles.categoryTextContainer}>
                     <Text style={styles.categoryText}>Open Restaurants</Text>

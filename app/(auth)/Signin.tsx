@@ -8,6 +8,7 @@ import { fontSize, spacing } from '@/constants/Dimentions';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useAuthStore } from '@/api/AuthStore';
 
 
 const signinSchema = Yup.object().shape({
@@ -16,6 +17,8 @@ const signinSchema = Yup.object().shape({
 });
 
 const Signin = () => {
+    const { login, error, isLoading } = useAuthStore();
+  
   const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0E0D1B' }}>
@@ -41,9 +44,16 @@ const Signin = () => {
             {/* White Form Section */}
             <View style={styles.formSection}>
               <Formik
-                initialValues={{ email: '', password: '',  }}
+                initialValues={{ email: '', password: '',}}
                 validationSchema={signinSchema}
-                onSubmit={(values) => console.log(values)}
+                onSubmit={async (values) => {
+                  try {
+                    await login(values.email, values.password);
+                    router.push('/Home');
+                  } catch (err) {
+                    console.log('login failed:', err);
+                  }
+                }}
               >
                 {({ handleChange, handleSubmit, values, errors, touched }) => (
                   <View style={styles.form}>
@@ -86,7 +96,7 @@ const Signin = () => {
                     </View>
                     {/* <View style={{ marginTop: 20 }} /> */}
                     <View style={styles.buttonWrapper}>
-                      <Button title="SIGN UP" onPress={handleSubmit} disabled={!values.email || !values.password || Object.keys(errors).length > 0}/>
+                      <Button title="SIGN UP" onPress={handleSubmit} loading={isLoading} disabled={!values.email || !values.password || Object.keys(errors).length > 0}/>
                     </View>
                   </View>
                 )}

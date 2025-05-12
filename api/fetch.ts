@@ -35,3 +35,15 @@ export const getResturant = async () => {
         throw error?.response?.data?.message
     }
 }
+
+export const getResturantById = async ({resturantId}:{resturantId: string}) => {
+    const url = `/resturant/${resturantId}`
+    try {
+        const response = await axiosInstance.get(url)
+        console.log('resturants items ======>>>>>>>>', response.data)
+        return response.data
+    } catch (error) {
+        console.log('categories items error====>>>>>', error?.response?.data?.message)
+        throw error?.response?.data?.message
+    }
+}

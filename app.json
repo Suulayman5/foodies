@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Foodies",
-    "slug": "Foodies",
+    "slug": "your-Foodies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Logo.png",
@@ -15,7 +15,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/SplashPage_02.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "jsEngine": "hermes",
+      "package": "com.ajah.yourFoodies"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +38,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f3aa7edc-9555-48be-ac1b-2f25cf46cf39"
+      }
+    },
+    "owner": "ajah"
   }
 }

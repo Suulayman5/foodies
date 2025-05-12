@@ -68,6 +68,7 @@ interface AuthStore {
       try {
         const response = await axiosInstance.get('/auth/check-auth');
         set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
+        console.log('user====>>>>>',response.data.user)
       } catch (error) {
         set({ error: null, isCheckingAuth: false });
         throw error;
